@@ -2,8 +2,9 @@ def generateEquationTemplate(equations):
 	numberIndex = 0
 	numberSlot = 'n'
 	nounSlot = 'x'
+	template = []
 	for equation in equations:
-		print equation
+		#print equation
 		sNum = True
 		sAlpha = True
 		result = ''
@@ -24,7 +25,7 @@ def generateEquationTemplate(equations):
 				else:
 					pass
 				sNum = False
-			elif char.isalpha():
+			elif char.isalpha() or char == '_':
 				if(sAlpha == True):
 					sNum = True
 				else:
@@ -44,8 +45,10 @@ def generateEquationTemplate(equations):
 			if curNoun not in nouns:
 				nouns.append(curNoun)
 			result += nounSlot + str(nouns.index(curNoun))
-		print result
-		print nouns
+		template.append(result)
+	return template
+		#print result
+		#print nouns
 
 
 
