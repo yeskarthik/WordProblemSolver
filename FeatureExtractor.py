@@ -14,7 +14,7 @@ def numberOfNumbers(features, wordProblem):
             addFeature(features, 'NUM_OF_NUMS')
     return count
 
-def extractFeature(wordProblem):    
+def extractFeatures(wordProblem):    
 
     features = {}
 
@@ -49,5 +49,5 @@ def extractFeature(wordProblem):
 
     return features
 
-print extractFeature('A writing workshop enrolls novelists and poets in a ratio of 5 to 3. There are 24 people at the workshop. How many novelists are there? How many poets are there?')
-print extractFeature('Flying with the wind , a bird was able to make 150 kilometers per hour. If the wind was 0.5 times as strong and the bird flies against it , it could make only 30 kilometers per hour. Find the velocity of the wind in kilometers per hour. Find the velocity of the bird. ')
+#print extractFeatures('A writing workshop enrolls novelists and poets in a ratio of 5 to 3. There are 24 people at the workshop. How many novelists are there? How many poets are there?')
+#print extractFeatures('Flying with the wind , a bird was able to make 150 kilometers per hour. If the wind was 0.5 times as strong and the bird flies against it , it could make only 30 kilometers per hour. Find the velocity of the wind in kilometers per hour. Find the velocity of the bird. ')

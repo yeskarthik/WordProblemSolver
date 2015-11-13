@@ -1,6 +1,7 @@
 import json
 from ReadEquations import generateEquationTemplate
-from Classifier import classify
+from Classifier import trainClassifier
+from TestEquations import testEquations
 
 data = None
 labeled_data = []
@@ -31,12 +32,23 @@ def parseDataset(dataSource):
 
 if __name__ == "__main__":
     labeled_word_problems = parseDataset('data/questions-original.json')
-    print labeled_word_problems
-    for i, iIndex, sQuestion, template in labeled_word_problems:
-        print iIndex, template
+    #print labeled_word_problems
+    with open('data/templates.txt', 'w') as f:
+        for i, iIndex, sQuestion, template in labeled_data:
+            f.write(str(i) + ' , ' + str(iIndex) + ' , ' + str(template) + '\n')
     #print labeled_data
-    chosen_template_index = classify(labeled_data)
-    print allTemplates[chosen_template_index]
+    #Divide into two folds
+    length_by_two = len(labeled_data)/2
+    train_data = labeled_data[:length_by_two]
+    test_data = labeled_data[length_by_two:]
+    classifier = trainClassifier(train_data)
+    stats = testEquations(classifier, test_data)
+
+    print stats
+
+    print 'Correctly predicted:', stats[0]/(stats[0]+stats[1]+0.0)*100.0,'%'
+    print 'Incorrectly predicted:', stats[1]/(stats[0]+stats[1]+0.0)*100.0,'%'
+    #print allTemplates[chosen_template_index]
 
     #for i, iIndex, sQuestion, template in labeled_data:
     #    print i, iIndex, template

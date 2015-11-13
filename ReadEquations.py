@@ -10,9 +10,17 @@ def generateEquationTemplate(equations):
 		result = ''
 		nouns=[]
 		curNoun = ''
+		prev_char = ''
 		for char in equation:
 			#print char
-			if char.isnumeric() or char == '.':
+			if char.isalpha() or char == '_' or (char.isnumeric() and (prev_char.isalpha() or prev_char == '_')):
+				if(sAlpha == True):
+					sNum = True
+				else:
+					pass
+				curNoun += char
+				sAlpha = False
+			elif char.isnumeric() or char == '.':
 				if sNum == True:				
 					if curNoun != '':
 						if curNoun not in nouns:
@@ -25,13 +33,6 @@ def generateEquationTemplate(equations):
 				else:
 					pass
 				sNum = False
-			elif char.isalpha() or char == '_':
-				if(sAlpha == True):
-					sNum = True
-				else:
-					pass
-				curNoun += char
-				sAlpha = False
 			else:	
 				if curNoun != '':
 					if curNoun not in nouns:
@@ -41,6 +42,7 @@ def generateEquationTemplate(equations):
 				sNum = True
 				result += char
 				sAlpha = True
+			prev_char = char
 		if equation[-1].isalpha():
 			if curNoun not in nouns:
 				nouns.append(curNoun)
