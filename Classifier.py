@@ -1,14 +1,31 @@
 import nltk
 from FeatureExtractor import extractFeatures
 
-def trainClassifier(labeled_word_problems):
+
+def trainClassifierScikit(labeled_word_problems, algorithm):
+    featuresets = [(extractFeatures(wordproblem), i) for (i, iIndex, wordproblem, equationTemplate) in labeled_word_problems]
+
+    for featureset in featuresets:
+        feat = []
+        print featureset
+        for key in featureset[0].keys():
+            feat.append(featureset[key])
+            print feat
+
+def trainClassifier(labeled_word_problems, algorithm):
     
     featuresets = [(extractFeatures(wordproblem), i) for (i, iIndex, wordproblem, equationTemplate) in labeled_word_problems]
 
     train_set = featuresets
 
-    #classifier = nltk.DecisionTreeClassifier.train(train_set)
-    classifier = nltk.NaiveBayesClassifier.train(train_set)
+    if algorithm == 'DecisionTree':
+        classifier = nltk.DecisionTreeClassifier.train(train_set)
+    elif algorithm == 'NaiveBayes':
+        classifier = nltk.NaiveBayesClassifier.train(train_set)
+    elif algorithm == 'MaxEntMegam':
+        classifier = nltk.classify.MaxentClassifier.train(train_set, 'MEGAM', trace=0, max_iter=1)
+    elif algorithm == 'MaxEnt':
+        classifier = nltk.MaxentClassifier.train(train_set)
 
     return classifier
 

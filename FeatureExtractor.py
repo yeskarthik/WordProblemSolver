@@ -1,4 +1,6 @@
 import nltk
+from nltk.tag.perceptron import PerceptronTagger
+tagger = PerceptronTagger()
 
 def addFeature(features, feature):
         try:
@@ -8,8 +10,12 @@ def addFeature(features, feature):
 
 def numberOfNumbers(features, wordProblem):
     count = 0
-    tagged = nltk.pos_tag(nltk.word_tokenize(wordProblem))
-    for word, pos in tagged:
+    
+    tagset = None
+    tokens = nltk.word_tokenize(wordProblem)
+    tags = nltk.tag._pos_tag(tokens, tagset, tagger)
+    
+    for word, pos in tags:
         if pos == 'CD':
             addFeature(features, 'NUM_OF_NUMS')
     return count
@@ -21,7 +27,7 @@ def extractFeatures(wordProblem):
     for word in nltk.word_tokenize(wordProblem):
         word = word.lower()
 
-        if '$' in word:
+        if '$' in word: #Not so useful
             addFeature(features, 'DOLLAR')
         if '%' in word or 'percent' in word or 'percentage' in word:
             addFeature(features, 'PERCENTAGE')
@@ -33,15 +39,15 @@ def extractFeatures(wordProblem):
             addFeature(features, 'TIMES')
         if 'miles' in word:
             addFeature(features, 'MILES')
-        if 'interest' in word:
+        if 'interest' in word: #Not so useful
             addFeature(features, 'INTEREST')
         if 'find' in word or '?' in word:
             addFeature(features, 'QUESTION')
         if 'sum' in word:
             addFeature(features, 'SUM')
-        if 'difference' in word:
+        if 'difference' in word: #Not so useful
             addFeature(features, 'DIFFERENCE')
-        if 'between' in word:
+        if 'between' in word: #Not so useful
             addFeature(features, 'BETWEEN')
 
     numberOfNumbers(features, wordProblem)
