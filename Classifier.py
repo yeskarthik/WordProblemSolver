@@ -1,19 +1,38 @@
 import nltk
 from FeatureExtractor import extractFeatures
-
+from FeatureExtractor import addBagOfWordsFeature
+from sklearn.svm import SVC
+from sklearn.naive_bayes import GaussianNB
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.linear_model import LogisticRegression
 
 def trainClassifierScikit(labeled_word_problems, algorithm):
-    featuresets = [(extractFeatures(wordproblem), i) for (i, iIndex, wordproblem, equationTemplate) in labeled_word_problems]
+    allwordproblems = []
+    templateIndices = []
+    for (i, iIndex, wordproblem, equationTemplate) in labeled_word_problems:
+        allwordproblems.append(wordproblem)
+        templateIndices.append(i)
 
-    for featureset in featuresets:
-        feat = []
-        print featureset
-        for key in featureset[0].keys():
-            feat.append(featureset[key])
-            print feat
+    vectorizer, featuresets = addBagOfWordsFeature(allwordproblems)
+
+    if algorithm == 'SVM':
+        classifier = SVC()
+    elif algorithm == 'NaiveBayes':
+        classifier = GaussianNB()
+    elif algorithm == 'DecisionTree':
+        classifier = DecisionTreeClassifier()
+    elif algorithm == 'MaxEnt':
+        classifier = LogisticRegression()
+
+    classifier.fit(featuresets, templateIndices)
+
+    return (vectorizer, classifier)
+
+
 
 def trainClassifier(labeled_word_problems, algorithm):
-    
+        
+
     featuresets = [(extractFeatures(wordproblem), i) for (i, iIndex, wordproblem, equationTemplate) in labeled_word_problems]
 
     train_set = featuresets

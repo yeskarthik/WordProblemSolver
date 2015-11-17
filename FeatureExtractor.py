@@ -1,6 +1,52 @@
 import nltk
 from nltk.tag.perceptron import PerceptronTagger
+import sklearn
+from sklearn.feature_extraction.text import CountVectorizer
+import numpy
+
 tagger = PerceptronTagger()
+
+def addBagOfWordsFeature(wordproblems):
+    vectorizer = CountVectorizer(analyzer = 'word', tokenizer = None, preprocessor = None, 
+        stop_words = None, max_features = 5000)
+    train_data_features = vectorizer.fit_transform(wordproblems)    
+    train_data_features = train_data_features.toarray()
+    vocab = vectorizer.get_feature_names()
+    vocab_wo_nums = []
+    for s in vocab:
+        if not s.isnumeric():
+            vocab_wo_nums.append(s)
+
+    vectorizer = CountVectorizer(analyzer = 'word', tokenizer = None, preprocessor = None, 
+        stop_words = None, max_features = 5000, vocabulary = vocab_wo_nums)
+    train_data_features = vectorizer.fit_transform(wordproblems)    
+    train_data_features = train_data_features.toarray()
+    vocab = vectorizer.get_feature_names()
+
+    with open('data/vocab.txt', 'w') as f:
+        f.write(str(vocab))
+
+    numofnums = []
+    numofques = []
+    numofpercent = []
+    for i in range(0, len(train_data_features)):
+        nums = numberOfNumbers(None, wordproblems[i])
+        numofnums.append(nums)
+        ques = numberOfQuestions(wordproblems[i])
+        numofques.append(ques)
+        perc = numberOfPercent(wordproblems[i])
+        numofpercent.append(perc)
+    numofnums = numpy.array(numofnums)
+    numofques = numpy.array(numofques)
+    numofpercent = numpy.array(numofpercent)
+
+    train_data_features = numpy.hstack((train_data_features, numpy.atleast_2d(numofnums).T))
+    train_data_features = numpy.hstack((train_data_features, numpy.atleast_2d(numofques).T))
+    train_data_features = numpy.hstack((train_data_features, numpy.atleast_2d(numofpercent).T))
+
+    #print train_data_features
+    return (vectorizer, train_data_features)
+
 
 def addFeature(features, feature):
         try:
@@ -17,8 +63,31 @@ def numberOfNumbers(features, wordProblem):
     
     for word, pos in tags:
         if pos == 'CD':
-            addFeature(features, 'NUM_OF_NUMS')
+            if features != None:
+                addFeature(features, 'NUM_OF_NUMS')
+            count += 1
     return count
+
+def numberOfQuestions(wordProblem):
+    count =0
+    tokens = nltk.word_tokenize(wordProblem)
+    for word in tokens:
+        word = word.lower()
+        if('?' in word or 'find' in word):
+            count += 1
+    return count
+
+def numberOfPercent(wordProblem):
+    count =0
+    tokens = nltk.word_tokenize(wordProblem)
+    for word in tokens:
+        word = word.lower()
+        if '%' in word or 'percent' in word or 'percentage' in word:
+            count += 1
+    return count    
+
+def extractScikitFeatures(wordProblem):
+    pass
 
 def extractFeatures(wordProblem):    
 
@@ -49,6 +118,13 @@ def extractFeatures(wordProblem):
             addFeature(features, 'DIFFERENCE')
         if 'between' in word: #Not so useful
             addFeature(features, 'BETWEEN')
+        if 'many' in word:
+            addFeature(features, 'MANY')
+        if 'ratio' in word:
+            addFeature(features, 'RATIO')
+        #if 'numbers' in word or 'number' in word:
+        #    addFeature(features, 'NUMSTR')
+
 
     numberOfNumbers(features, wordProblem)
     #print features
