@@ -1,4 +1,4 @@
-Word Problem Solver
+# Word Problem Solver 
 
 ### Prerequisites:
 - NLTK 3.1
@@ -28,6 +28,6 @@ The templates for each wordproblem will be available in data/templates.txt
 
 ### References
 
-#. http://textminingonline.com/dive-into-nltk-part-viii-using-external-maximum-entropy-modeling-libraries-for-text-classification
-#. http://www.nltk.org/
-#. http://scikit-learn.org/stable/
+- http://textminingonline.com/dive-into-nltk-part-viii-using-external-maximum-entropy-modeling-libraries-for-text-classification
+- http://www.nltk.org/
+- http://scikit-learn.org/stable/
