@@ -1,30 +1,42 @@
 import nltk
-from nltk.tag.perceptron import PerceptronTagger
 import sklearn
-from sklearn.feature_extraction.text import CountVectorizer
 import numpy
+
+from nltk.tag.perceptron import PerceptronTagger
+from sklearn.feature_extraction.text import CountVectorizer
+from nltk.stem import WordNetLemmatizer
+
+class LemmaTokenizer(object):
+    def __init__(self):
+        self.wnl = WordNetLemmatizer()
+    def __call__(self, doc):
+        return [self.wnl.lemmatize(t) for t in nltk.word_tokenize(doc)]
+
 
 tagger = PerceptronTagger()
 
 def addBagOfWordsFeature(wordproblems):
-    vectorizer = CountVectorizer(analyzer = 'word', tokenizer = None, preprocessor = None, 
+    vectorizer = CountVectorizer(analyzer = 'word', tokenizer=LemmaTokenizer(), preprocessor = None, 
         stop_words = None, max_features = 5000)
     train_data_features = vectorizer.fit_transform(wordproblems)    
     train_data_features = train_data_features.toarray()
     vocab = vectorizer.get_feature_names()
     vocab_wo_nums = []
     for s in vocab:
-        if not s.isnumeric():
+        if not any(char.isdigit() for char in s):
             vocab_wo_nums.append(s)
+        else:
+            print s
 
-    vectorizer = CountVectorizer(analyzer = 'word', tokenizer = None, preprocessor = None, 
+    vectorizer = CountVectorizer(analyzer = 'word', tokenizer=LemmaTokenizer(), preprocessor = None, 
         stop_words = None, max_features = 5000, vocabulary = vocab_wo_nums)
+
     train_data_features = vectorizer.fit_transform(wordproblems)    
     train_data_features = train_data_features.toarray()
     vocab = vectorizer.get_feature_names()
 
     with open('data/vocab.txt', 'w') as f:
-        f.write(str(vocab))
+        f.write(str(vocab_wo_nums))
 
     numofnums = []
     numofques = []
