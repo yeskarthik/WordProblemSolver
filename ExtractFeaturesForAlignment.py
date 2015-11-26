@@ -14,6 +14,7 @@ def extractNumberVectorFromQuestion(wordproblem):
 		else:
 			pass
 	print numberVector
+	return numberVector
 
 
 
@@ -66,4 +67,4 @@ def text2int(textnum, numwords={}):
 
 
 
-extractNumberVectorFromQuestion("A woman invested a total of 9,000 dollars in 2 accounts , one earning 6.5 % annual interest and the other earning 8 % annual interest.")
+#extractNumberVectorFromQuestion("A woman invested a total of 9,000 dollars in 2 accounts , one earning 6.5 % annual interest and the other earning 8 % annual interest.")
