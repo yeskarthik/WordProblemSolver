@@ -31,7 +31,7 @@ def solveEquations(equations, numberSlots, alignedNumbers):
     print sanitized
     if len(sanitized) == 1:
         result = solve((sanitized[0]), x0)
-    else if len(sanitized) == 2:
+    elif len(sanitized) == 2:
         result = solve((sanitized[0], sanitized[1]), x0, x1)
     print result
 
