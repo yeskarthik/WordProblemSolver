@@ -25,8 +25,6 @@ def addBagOfWordsFeature(wordproblems):
     for s in vocab:
         if not any(char.isdigit() for char in s):
             vocab_wo_nums.append(s)
-        else:
-            print s
 
     vectorizer = CountVectorizer(analyzer = 'word', tokenizer=LemmaTokenizer(), preprocessor = None, 
         stop_words = None, max_features = 5000, vocabulary = vocab_wo_nums)
