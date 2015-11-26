@@ -29,7 +29,10 @@ def solveEquations(equations, numberSlots, alignedNumbers):
         sanitized.append(eq)
 
     print sanitized
-    result = solve((sanitized[0], sanitized[1]), x0, x1)
+    if len(sanitized) == 1:
+        result = solve((sanitized[0]), x0)
+    else if len(sanitized) == 2:
+        result = solve((sanitized[0], sanitized[1]), x0, x1)
     print result
 
 
