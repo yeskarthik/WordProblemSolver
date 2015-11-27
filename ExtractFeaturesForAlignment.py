@@ -22,7 +22,16 @@ def extractNumberVectorFromQuestion(wordproblem):
 		tokens = nltk.word_tokenize(sentence)
 		tagset = None
 		tags = nltk.tag._pos_tag(tokens, tagset, tagger)
-		for word, pos in tags:
+		for wordIndex in range(0,len(tags)):
+			word, pos = tags[wordIndex]
+			try:
+				if word.lower() == 'one':
+					nextword, nexttag = tags[wordIndex+1]
+					#prevword, pretag = tags[wordIndex+1]
+					if nexttag != 'JJR':
+						break
+			except:
+				pass
 			if word.lower() in keywords.keys():
 				numberVector.append(keywords[word.lower()])
 			#print word, pos
@@ -147,4 +156,4 @@ def findAlignment(wordproblem, equation, solution):
 #equation = [u'(n0*x0)-(n1*x1)=n2', u'x0+x1=n3'] 
 #solution = [19.0]
 #print findAlignment(wordproblem, equation, solution)
-#extractNumberVectorFromQuestion('Nine books are to be bought by a student. Some cost 6 dollars each and the remainder cost 6.50 dollars each. The total amount spent was 56 dollars. How many 6-dollar books were sold? How many 6.50-dollar books were sold?')
+#extractNumberVectorFromQuestion('On Monday , Harold picked up three doughnuts and four large coffees for the office staff. He paid 4.91 dollars. On Tuesday Melinda picked up five doughnuts and six large coffees for the office staff. She paid 7.59 dollars. What is the cost of one doughnut? What is the cost of one large coffee? ')
