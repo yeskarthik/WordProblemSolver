@@ -1,4 +1,5 @@
 def generateEquationTemplate(equations):
+	#print equations
 	numberIndex = 0
 	numberSlot = 'n'
 	nounSlot = 'x'
@@ -84,6 +85,7 @@ def generateEquationTemplate(equations):
 	#print numerSlots
 	#print template
 	for key, value in numerSlots.items():
+		value = str(float(value))
 		if value not in duplicates:
 			duplicates[value] = [key]
 		else:
@@ -112,5 +114,5 @@ def generateEquationTemplate(equations):
 
 
 
-#generateEquationTemplate([u"((25.0*0.01)*twentyfive_solution)+((50.0*0.01)*fifty_solution)=45.0*0.01*1000.0"])
+#generateEquationTemplate([u"(18*.01*eighteen_liters)+(50*.01*fifty_liters)=30*0.01*80.0", u"eighteen_liters+fifty_liters=80.0"])
 
