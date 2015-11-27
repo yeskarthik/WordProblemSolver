@@ -10,6 +10,7 @@ def getNumberslots(template):
         numbers[i] = 'n'+numbers[i]
     
     #print numbers
+    numbers = list(set(numbers))
     return numbers
 
 
@@ -25,6 +26,7 @@ def solveEquations(equations, numberSlots, alignedNumbers):
         g = eq.split('=')
         g[1] = g[1].replace('+', '$').replace('-', '+').replace('$', '-')
         eq = g[0] + '-' + g[1]
+        print eq
         for i in range(0, len(numberSlots)):
             eq = eq.replace(numberSlots[i], str(alignedNumbers[i]))
         sanitized.append(eq)
@@ -39,8 +41,9 @@ def solveEquations(equations, numberSlots, alignedNumbers):
     return result
 
 
-#equation = [u'(n0*x0)=(n1*x1)', u'x0+x1=n2']
+#equation = [u'(n0*x0)+(n1*x1)=n2*n3', u'x0+x1=n2']
 
 #alignedNumbers = extractNumberVectorFromQuestion('A writing workshop enrolls novelists and poets in a ratio of 5 to 3. There are 24 people at the workshop. How many novelists are there? How many poets are there?')
-
+#alignedNumbers = [5.5, 4.25, 40.0, 4.6]
+#print getNumberslots(equation)
 #solveEquations(equation, getNumberslots(equation), alignedNumbers)
