@@ -5,6 +5,9 @@ def generateEquationTemplate(equations):
 	template = []
 	for equation in equations:
 		#print equation
+		if '0.01' in equation:
+			equation = equation.replace("0.01","%")
+			#print equation
 		sNum = True
 		sAlpha = True
 		result = ''
@@ -13,6 +16,8 @@ def generateEquationTemplate(equations):
 		prev_char = ''
 		for char in equation:
 			#print char
+			if(char == '%'):
+				pass
 			if char.isalpha() or char == '_' or (char.isnumeric() and (prev_char.isalpha() or prev_char == '_')):
 				if(sAlpha == True):
 					sNum = True
@@ -47,12 +52,14 @@ def generateEquationTemplate(equations):
 			if curNoun not in nouns:
 				nouns.append(curNoun)
 			result += nounSlot + str(nouns.index(curNoun))
+		result = result.replace("%","0.01")
 		template.append(result)
+	print template
 	return template
-		#print result
-		#print nouns
+	#print result
+	#print nouns
 
 
 
-#generateEquationTemplate([u'3.0*novelists=5.0*poets', u'novelists+poets=24.0'])
+#generateEquationTemplate([u'(7*0.01*fundone)+(6*0.01*fundtwo)=405.0'])
 
