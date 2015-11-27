@@ -5,23 +5,40 @@ from sympy import Symbol
 
 tagger = PerceptronTagger()
 def extractNumberVectorFromQuestion(wordproblem):
-	numberVector = []	
-	tokens = nltk.word_tokenize(wordproblem)
-	tagset = None
-	tags = nltk.tag._pos_tag(tokens, tagset, tagger)
-	for word, pos in tags:
-		if pos == 'CD':
-			number = convertNumber(unicode(word,"utf-8"))
-			#print number
-			numberVector.append(number)
-		else:
-			pass
-	print numberVector
+	percents = 0
+
+	sentences = wordproblem.replace('?','. ').split('. ')
+	numberVector = []
+	for i in range(0, len(sentences)):
+		sentence = sentences[i]
+		
+		tokens = nltk.word_tokenize(sentence)
+		tagset = None
+		tags = nltk.tag._pos_tag(tokens, tagset, tagger)
+		for word, pos in tags:
+			if pos == 'CD':
+				#print word
+				number = convertToNumber(unicode(str(word),"utf-8"))
+				#print number
+				try:
+					if i > 0:
+						numberVector.index(number)
+					else:
+						numberVector.append(number)
+				except ValueError:					
+					numberVector.append(number)
+			elif word == '%':
+				percents += 1
+				if percents < 3:
+					numberVector.append(0.01)
+			else:
+				pass
+	print 'Extract feature', numberVector
 	return numberVector
 
 
 
-def convertNumber(word):
+def convertToNumber(word):
 	number = 0.0
 	strnum = ''
 	flag = False
@@ -44,6 +61,7 @@ def convertNumber(word):
 
 
 def text2int(textnum, numwords={}):
+	current = result = 0
 	if not numwords:
 		units = [
 		"zero", "one", "two", "three", "four", "five", "six", "seven", "eight",
@@ -57,7 +75,7 @@ def text2int(textnum, numwords={}):
 		for idx, word in enumerate(units):    numwords[word] = (1, idx)
 		for idx, word in enumerate(tens):     numwords[word] = (1, idx * 10)
 		for idx, word in enumerate(scales):   numwords[word] = (10 ** (idx * 3 or 2), 0)
-		current = result = 0
+		
 		for word in textnum.split():
 			if word not in numwords:
 				raise Exception("Illegal word: " + word)
@@ -87,17 +105,32 @@ def all_perms(elements):
 
 def findAlignment(wordproblem, equation, solution):
 	numberVector = extractNumberVectorFromQuestion(wordproblem)
+	#numberVector = numberVector[:5]
 	alignments = createAllAlignments(numberVector)
+	correctAlignment =[]
 	x0 = Symbol('x0')
+	test = []
 	#x1 = Symbol('x1')
-	for alignment in alignments:
-		result = solveEquations(equation, getNumberslots(equation), alignment)
-		if len(equation) == 1:
-			if solution[0] == result[x0]:
-				return alignment
-		elif len(equation) == 2:
-			if solution[0] == result[x0]:# and solution[1] == result[x1]:
-				return alignment
+	try:
+		i = 0
+		for alignment in alignments:
+			result = solveEquations(equation, getNumberslots(equation), alignment)
+			test = alignment
+			if len(result) != 0:
+				if len(equation) == 1:
+					if solution[0] == result[x0]:
+						correctAlignment = alignment
+				elif len(equation) == 2:
+					if solution[0] == result[x0]:# and solution[1] == result[x1]:
+						correctAlignment = alignment
+	except:
+		print 'error'
+		print wordproblem
+		print equation
+		print test
+
+
+	return (correctAlignment, numberVector)
 
 #wordproblem = 'In a test of 30 questions , 20 points are given for each correct answer and 5 points are deducted for each one answered incorrectly. If Maria answered all of the questions and got a score of 325 , how many did she get correct?'
 #equation = [u'(n0*x0)-(n1*x1)=n2', u'x0+x1=n3'] 

@@ -6,7 +6,7 @@ def testScikitEquations(classifier, vectorizer, labeled_data):
 
     wordproblems = []
     onlyIndices = []
-    for (i, iIndex, wordproblem, equationTemplate) in labeled_data:
+    for (i, iIndex, wordproblem, equationTemplate, solution) in labeled_data:
         wordproblems.append(wordproblem)
         onlyIndices.append(i)
     test_featuresets = vectorizer.transform(wordproblems).toarray()
@@ -34,11 +34,12 @@ def testScikitEquations(classifier, vectorizer, labeled_data):
     prediction = classifier.predict(test_featuresets)
     score = metrics.accuracy_score(onlyIndices, prediction)
     print("Accuracy:   %0.3f" % score)
+    return prediction
 
 def testEquations(classifier, labeled_data):
     correctly_found = 0
     incorrectly_found = 1
-    for (i, iIndex, wordproblem, equationTemplate) in labeled_data:
+    for (i, iIndex, wordproblem, equationTemplate, solution) in labeled_data:
         foundIndex = classifier.classify(extractFeatures(wordproblem))
         #print foundIndex, i
         if foundIndex == i:
@@ -46,3 +47,5 @@ def testEquations(classifier, labeled_data):
         else:
             incorrectly_found += 1
     return (correctly_found, incorrectly_found)
+
+

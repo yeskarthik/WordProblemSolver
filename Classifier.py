@@ -9,11 +9,15 @@ from sklearn.linear_model import LogisticRegression
 def trainClassifierScikit(labeled_word_problems, algorithm):
     allwordproblems = []
     templateIndices = []
-    for (i, iIndex, wordproblem, equationTemplate) in labeled_word_problems:
+    for (i, iIndex, wordproblem, equationTemplate, lSolutions) in labeled_word_problems:
         allwordproblems.append(wordproblem)
         templateIndices.append(i)
 
     vectorizer, featuresets = addBagOfWordsFeature(allwordproblems)
+
+    print type(featuresets)
+    
+    print templateIndices
 
     if algorithm == 'SVM':
         classifier = SVC()
@@ -33,7 +37,7 @@ def trainClassifierScikit(labeled_word_problems, algorithm):
 def trainClassifier(labeled_word_problems, algorithm):
         
 
-    featuresets = [(extractFeatures(wordproblem), i) for (i, iIndex, wordproblem, equationTemplate) in labeled_word_problems]
+    featuresets = [(extractFeatures(wordproblem), i) for (i, iIndex, wordproblem, equationTemplate, lSolutions) in labeled_word_problems]
 
     train_set = featuresets
 
