@@ -7,8 +7,8 @@ def generateEquationTemplate(equations):
 	duplicates = {}
 	for equation in equations:
 		#print equation
-		if '0.01' in equation:
-			equation = equation.replace("0.01","%")
+		#if '0.01' in equation:
+		#	equation = equation.replace("0.01","%")
 			#print equation
 		sNum = True
 		sAlpha = True
@@ -19,8 +19,8 @@ def generateEquationTemplate(equations):
 		prev_char = ''
 		for char in equation:
 			#print char
-			if(char == '%'):
-				pass
+			#if(char == '%'):
+			#	pass
 			if char.isalpha() or char == '_' or (char.isnumeric() and (prev_char.isalpha() or prev_char == '_')):
 				if(sAlpha == True):
 					sNum = True
@@ -79,7 +79,7 @@ def generateEquationTemplate(equations):
 			else:
 				numerSlots[numberSlot+str(numberIndex-1)] = curNumber
 				curNumber = ''
-		result = result.replace("%","0.01")
+		#result = result.replace("%","0.01")
 		template.append(result)
 	#print numerSlots
 	#print template
@@ -92,15 +92,16 @@ def generateEquationTemplate(equations):
 	valueToReplace = ''
 	toBeReplaced = ''
 	for key, value in duplicates.items():
-		if len(value) == 2:
+		if len(value) >= 2:
 			valueToReplace = value[0]
-			toBeReplaced = value[1]
-			for i in range(0,len(template)):
-				if toBeReplaced in template[i]:
-					template[i] = template[i].replace(toBeReplaced, valueToReplace)
-					break
-				else:
-					pass
+			for v in range(1, len(value)):
+				toBeReplaced = value[v]
+				for i in range(0,len(template)):
+					if toBeReplaced in template[i]:
+						template[i] = template[i].replace(toBeReplaced, valueToReplace)
+						break
+					else:
+						pass
 		else:
 			pass
 	#print 'final: '
@@ -111,5 +112,5 @@ def generateEquationTemplate(equations):
 
 
 
-#generateEquationTemplate([u'((6.0*0.01)*six_acid)+((14.0*0.01)*fourteen_acid)=12.0*0.01*50.0',u'six_acid+fourteen_acid=50.0'])
+#generateEquationTemplate([u"((25.0*0.01)*twentyfive_solution)+((50.0*0.01)*fifty_solution)=45.0*0.01*1000.0"])
 
