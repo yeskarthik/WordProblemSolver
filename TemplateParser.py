@@ -1,5 +1,5 @@
 import re
-from ExtractFeaturesForAlignment import extractNumberVectorFromQuestion
+#from ExtractFeaturesForAlignment import extractNumberVectorFromQuestion
 
 def getNumberslots(template):
     numbers = []
@@ -34,10 +34,11 @@ def solveEquations(equations, numberSlots, alignedNumbers):
     elif len(sanitized) == 2:
         result = solve((sanitized[0], sanitized[1]), x0, x1)
     print result
+    return result
 
 
-equation = [u'(n0*x0)=(n1*x1)', u'x0+x1=n2']
+#equation = [u'(n0*x0)=(n1*x1)', u'x0+x1=n2']
 
-alignedNumbers = extractNumberVectorFromQuestion('A writing workshop enrolls novelists and poets in a ratio of 5 to 3. There are 24 people at the workshop. How many novelists are there? How many poets are there?')
+#alignedNumbers = extractNumberVectorFromQuestion('A writing workshop enrolls novelists and poets in a ratio of 5 to 3. There are 24 people at the workshop. How many novelists are there? How many poets are there?')
 
-solveEquations(equation, getNumberslots(equation), alignedNumbers)
+#solveEquations(equation, getNumberslots(equation), alignedNumbers)
