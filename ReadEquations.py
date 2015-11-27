@@ -3,6 +3,8 @@ def generateEquationTemplate(equations):
 	numberSlot = 'n'
 	nounSlot = 'x'
 	template = []
+	numerSlots = {}
+	duplicates = {}
 	for equation in equations:
 		#print equation
 		if '0.01' in equation:
@@ -12,6 +14,7 @@ def generateEquationTemplate(equations):
 		sAlpha = True
 		result = ''
 		nouns=[]
+		curNumber = ''
 		curNoun = ''
 		prev_char = ''
 		for char in equation:
@@ -23,9 +26,19 @@ def generateEquationTemplate(equations):
 					sNum = True
 				else:
 					pass
+				if curNumber != '':
+					if numberSlot+str(numberIndex) not in numerSlots.keys():
+						numerSlots[numberSlot+str(numberIndex-1)] = curNumber
+					else:
+						numerSlots[numberSlot+str(numberIndex-1)] = curNumber
+				curNumber = ''
 				curNoun += char
 				sAlpha = False
 			elif char.isnumeric() or char == '.':
+				#print 'curnumber:'+ str(curNumber)
+				#print 'char'+ str(char)
+				curNumber += char
+				#print curNumber
 				if sNum == True:				
 					if curNoun != '':
 						if curNoun not in nouns:
@@ -37,8 +50,16 @@ def generateEquationTemplate(equations):
 					numberIndex += 1
 				else:
 					pass
+				
 				sNum = False
-			else:	
+			else:
+				if curNumber != '':
+					if numberSlot+str(numberIndex) not in numerSlots.keys():
+						numerSlots[numberSlot+str(numberIndex-1)] = curNumber
+					else:
+						numerSlots[numberSlot+str(numberIndex-1)] = curNumber
+				curNumber = ''
+
 				if curNoun != '':
 					if curNoun not in nouns:
 						nouns.append(curNoun)
@@ -52,14 +73,43 @@ def generateEquationTemplate(equations):
 			if curNoun not in nouns:
 				nouns.append(curNoun)
 			result += nounSlot + str(nouns.index(curNoun))
+		if curNumber != '':
+			if numberSlot+str(numberIndex) not in numerSlots.keys():
+				numerSlots[numberSlot+str(numberIndex-1)] = curNumber
+			else:
+				numerSlots[numberSlot+str(numberIndex-1)] = curNumber
+				curNumber = ''
 		result = result.replace("%","0.01")
 		template.append(result)
-	print template
+	#print numerSlots
+	#print template
+	for key, value in numerSlots.items():
+		if value not in duplicates:
+			duplicates[value] = [key]
+		else:
+			duplicates[value].append(key)
+	#print duplicates
+	valueToReplace = ''
+	toBeReplaced = ''
+	for key, value in duplicates.items():
+		if len(value) == 2:
+			valueToReplace = value[0]
+			toBeReplaced = value[1]
+			for i in range(0,len(template)):
+				if toBeReplaced in template[i]:
+					template[i] = template[i].replace(toBeReplaced, valueToReplace)
+					break
+				else:
+					pass
+		else:
+			pass
+	#print 'final: '
+	#print  template
 	return template
 	#print result
 	#print nouns
 
 
 
-#generateEquationTemplate([u'(7*0.01*fundone)+(6*0.01*fundtwo)=405.0'])
+#generateEquationTemplate([u'((6.0*0.01)*six_acid)+((14.0*0.01)*fourteen_acid)=12.0*0.01*50.0',u'six_acid+fourteen_acid=50.0'])
 
