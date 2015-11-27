@@ -24,12 +24,13 @@ def extractNumberVectorFromQuestion(wordproblem):
 		tags = nltk.tag._pos_tag(tokens, tagset, tagger)
 		for wordIndex in range(0,len(tags)):
 			word, pos = tags[wordIndex]
+			#print wordIndex, word, pos
 			try:
 				if word.lower() == 'one':
 					nextword, nexttag = tags[wordIndex+1]
 					#prevword, pretag = tags[wordIndex+1]
 					if nexttag != 'JJR':
-						break
+						continue
 			except:
 				pass
 			if word.lower() in keywords.keys():
@@ -156,4 +157,4 @@ def findAlignment(wordproblem, equation, solution):
 #equation = [u'(n0*x0)-(n1*x1)=n2', u'x0+x1=n3'] 
 #solution = [19.0]
 #print findAlignment(wordproblem, equation, solution)
-#extractNumberVectorFromQuestion('On Monday , Harold picked up three doughnuts and four large coffees for the office staff. He paid 4.91 dollars. On Tuesday Melinda picked up five doughnuts and six large coffees for the office staff. She paid 7.59 dollars. What is the cost of one doughnut? What is the cost of one large coffee? ')
+#extractNumberVectorFromQuestion("A student is pricing 2 different picture packages. John 's Photo World charges 2.75 dollars per sheet and a one time sitting fee of 125 dollars. Sam 's Picture Emporium charges 1.50 dollars per sheet and a one time sitting fee of 140 dollars. For how many sheets of pictures do the 2 companies charge the same amount?")
