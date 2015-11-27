@@ -53,9 +53,9 @@ def extractNumberVectorFromQuestion(wordproblem):
 			#		numberVector.append(0.01)
 	if '%' in wordproblem.lower() or 'cents' in wordproblem.lower() or 'percent' in wordproblem.lower() or 'percentage' in wordproblem.lower():
 		numberVector.append(0.01)
-	elif 'dimes' in wordproblem.lower():
+	if 'dimes' in wordproblem.lower():
 		numberVector.append(0.1)		
-	elif 'nickels' in wordproblem.lower():
+	if 'nickels' in wordproblem.lower():
 		numberVector.append(0.05)
 	print 'Extract feature', numberVector
 	return numberVector

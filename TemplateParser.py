@@ -11,6 +11,7 @@ def getNumberslots(template):
     
     #print numbers
     numbers = list(set(numbers))
+    
     return numbers
 
 
