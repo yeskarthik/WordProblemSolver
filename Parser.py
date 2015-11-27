@@ -2,6 +2,8 @@ import json
 from ReadEquations import generateEquationTemplate
 from Classifier import trainClassifier, trainClassifierScikit
 from TestEquations import testEquations, testScikitEquations
+from AlignmentClassifier import trainAlignmentClassifier, trainAlignmentClassifierScikit
+from TestAlignment import testAlignments
 
 data = None
 labeled_data = []
@@ -22,10 +24,10 @@ def parseDataset(dataSource):
             
             if template not in allTemplates:
                 allTemplates.append(template)
-                templates.append((allTemplates.index(template), iIndex, sQuestion, template))
-                labeled_data.append((allTemplates.index(template), iIndex, sQuestion, template))
+                templates.append((allTemplates.index(template), iIndex, sQuestion, template, lSolutions))
+                labeled_data.append((allTemplates.index(template), iIndex, sQuestion, template, lSolutions))
             else:                
-                labeled_data.append((allTemplates.index(template), iIndex, sQuestion, template))
+                labeled_data.append((allTemplates.index(template), iIndex, sQuestion, template, lSolutions))
 
     return templates
 
@@ -34,25 +36,34 @@ if __name__ == "__main__":
     labeled_word_problems = parseDataset('data/questions-original.json')
     
     with open('data/templates.txt', 'w') as f:
-        for i, iIndex, sQuestion, template in labeled_data:
-            f.write(str(i) + ' , ' + str(iIndex) + ' , ' + str(template) + ' , ' + sQuestion + '\n')
+        for i, iIndex, sQuestion, template, lSolutions in labeled_data:
+            f.write(str(i) + ' , ' + str(iIndex) + ' , ' + str(template) + ' , ' + sQuestion + ',' + '\n')
     
     #Divide into two folds
     length_by_two = len(labeled_data)/2
     train_data = labeled_data[:length_by_two]
     test_data = labeled_data[length_by_two:]
 
+    train_data = train_data[:50]
+    test_data = test_data[:50]
+    
     #train_data = labeled_data[length_by_two:]
     #test_data = labeled_data[:length_by_two]
     
-    algorithmsNLTK = ['NaiveBayes', 'DecisionTree', 'MaxEnt', 'MaxEntMegam']
-    algorithmsSciKit = ['NaiveBayes', 'DecisionTree', 'SVM', 'MaxEnt']
+    #classifier = trainAlignmentClassifierScikit(train_data, 'NaiveBayes')
+    #print classifier
+
+    
+    #algorithmsNLTK = ['NaiveBayes', 'DecisionTree', 'MaxEnt', 'MaxEntMegam']
+    #algorithmsSciKit = ['NaiveBayes', 'DecisionTree', 'SVM', 'MaxEnt']
+    algorithmsNLTK = []
+    algorithmsSciKit = ['NaiveBayes']
 
     print 'Start..'
     for algorithm in algorithmsSciKit:
         print 'Using', algorithm, 'classifier - Scikit Learn'  
         (vectorizer, classifier) = trainClassifierScikit(train_data, algorithm)
-        stats = testScikitEquations(classifier, vectorizer, test_data)
+        predictedEquations = testScikitEquations(classifier, vectorizer, test_data)
 
 
     for algorithm in algorithmsNLTK:
@@ -64,6 +75,10 @@ if __name__ == "__main__":
 
     print 'End.'
 
-
+    classifier = trainAlignmentClassifierScikit(train_data, 'NaiveBayes')
+    predictedAlignment = testAlignments(test_data,classifier)
+    print predictedAlignment
+    #print classifier
+    
 
     

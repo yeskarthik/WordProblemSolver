@@ -23,17 +23,19 @@ def solveEquations(equations, numberSlots, alignedNumbers):
     sanitized = []
     for eq in equations:
         g = eq.split('=')
-        eq = g[0]+'-'+g[1]
+        g[1] = g[1].replace('+', '$').replace('-', '+').replace('$', '-')
+        eq = g[0] + '-' + g[1]
         for i in range(0, len(numberSlots)):
             eq = eq.replace(numberSlots[i], str(alignedNumbers[i]))
         sanitized.append(eq)
 
-    print sanitized
+    #print sanitized
     if len(sanitized) == 1:
         result = solve((sanitized[0]), x0)
+        result = {x0: result[0]}
     elif len(sanitized) == 2:
         result = solve((sanitized[0], sanitized[1]), x0, x1)
-    print result
+    #print 'result: ', result
     return result
 
 
