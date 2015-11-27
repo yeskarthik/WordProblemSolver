@@ -1,12 +1,15 @@
 import nltk
+from nltk.tokenize import RegexpTokenizer
 from nltk.tag.perceptron import PerceptronTagger
 from TemplateParser import solveEquations, getNumberslots
 from sympy import Symbol
 
 tagger = PerceptronTagger()
+
 keywords = {"zero":0, "one":1, "two":2,"twice":2, "thrice":3, "double":2, "three":3, "four":4, "five":5, "six":6, "seven":7, "eight":8,
 		"nine":9, "ten":10, "eleven":11, "twelve":12, "thirteen":13, "fourteen":14, "fifteen":15,
 		"sixteen":16, "seventeen":17, "eighteen":18, "nineteen":19, "triple":3}
+
 def extractNumberVectorFromQuestion(wordproblem):
 	percents = 0
 
@@ -14,7 +17,8 @@ def extractNumberVectorFromQuestion(wordproblem):
 	numberVector = []
 	for i in range(0, len(sentences)):
 		sentence = sentences[i]
-		
+		sentence = sentence.replace('-', ' ')
+		#tokens = tokenizer.tokenize(sentence)
 		tokens = nltk.word_tokenize(sentence)
 		tagset = None
 		tags = nltk.tag._pos_tag(tokens, tagset, tagger)
@@ -33,12 +37,11 @@ def extractNumberVectorFromQuestion(wordproblem):
 						numberVector.append(number)
 				except ValueError:					
 					numberVector.append(number)
-			elif word == '%':
-				percents += 1
-				if percents < 3:
-					numberVector.append(0.01)
-			else:
-				pass
+			#elif word == '%':
+			#	percents += 1
+			#	if percents < 3:
+			#		numberVector.append(0.01)
+			
 	print 'Extract feature', numberVector
 	return numberVector
 
@@ -48,7 +51,7 @@ def convertToNumber(word):
 	number = 0.0
 	strnum = ''
 	flag = False
-	print word
+	#print word
 	for char in word:
 		if(char.isnumeric() or char == '.'):
 			strnum += char
@@ -62,7 +65,7 @@ def convertToNumber(word):
 		return float(strnum)
 	else:
 		result = text2int(word)
-		print result
+		#print result
 		return result
 
 
