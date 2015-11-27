@@ -4,6 +4,9 @@ from TemplateParser import solveEquations, getNumberslots
 from sympy import Symbol
 
 tagger = PerceptronTagger()
+keywords = {"zero":0, "one":1, "two":2,"twice":2, "thrice":3, "double":2, "three":3, "four":4, "five":5, "six":6, "seven":7, "eight":8,
+		"nine":9, "ten":10, "eleven":11, "twelve":12, "thirteen":13, "fourteen":14, "fifteen":15,
+		"sixteen":16, "seventeen":17, "eighteen":18, "nineteen":19, "triple":3}
 def extractNumberVectorFromQuestion(wordproblem):
 	percents = 0
 
@@ -16,7 +19,10 @@ def extractNumberVectorFromQuestion(wordproblem):
 		tagset = None
 		tags = nltk.tag._pos_tag(tokens, tagset, tagger)
 		for word, pos in tags:
-			if pos == 'CD':
+			if word.lower() in keywords.keys():
+				numberVector.append(keywords[word.lower()])
+			#print word, pos
+			elif pos == 'CD':
 				#print word
 				number = convertToNumber(unicode(str(word),"utf-8"))
 				#print number
@@ -42,7 +48,7 @@ def convertToNumber(word):
 	number = 0.0
 	strnum = ''
 	flag = False
-	#print word
+	print word
 	for char in word:
 		if(char.isnumeric() or char == '.'):
 			strnum += char
@@ -56,12 +62,14 @@ def convertToNumber(word):
 		return float(strnum)
 	else:
 		result = text2int(word)
+		print result
 		return result
 
 
 
 def text2int(textnum, numwords={}):
 	current = result = 0
+	textnum = str(textnum).lower()
 	if not numwords:
 		units = [
 		"zero", "one", "two", "three", "four", "five", "six", "seven", "eight",
@@ -132,8 +140,8 @@ def findAlignment(wordproblem, equation, solution):
 
 	return (correctAlignment, numberVector)
 
-#wordproblem = 'In a test of 30 questions , 20 points are given for each correct answer and 5 points are deducted for each one answered incorrectly. If Maria answered all of the questions and got a score of 325 , how many did she get correct?'
+#wordproblem = 'Nine books are to be bought by a student'
 #equation = [u'(n0*x0)-(n1*x1)=n2', u'x0+x1=n3'] 
 #solution = [19.0]
 #print findAlignment(wordproblem, equation, solution)
-#extractNumberVectorFromQuestion("A woman invested a total of 9,000 dollars in 2 accounts , one earning 6.5 % annual interest and the other earning 8 % annual interest.")
+#extractNumberVectorFromQuestion('Nine books are to be bought by a student. Some cost 6 dollars each and the remainder cost 6.50 dollars each. The total amount spent was 56 dollars. How many 6-dollar books were sold? How many 6.50-dollar books were sold?')
