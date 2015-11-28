@@ -10,7 +10,7 @@ def extractAlignmentFeatures(wordproblem, equationTemplate, solution, templateIn
         correctAlignment, numberVector = findAlignment(wordproblem, equationTemplate, solution)
     else:
         numberVector = extractNumberVectorFromQuestion(wordproblem)
-    print numberVector
+    #print numberVector
     correctAlignedIndices = []
     if len(correctAlignment) != 0:
         for each in correctAlignment:

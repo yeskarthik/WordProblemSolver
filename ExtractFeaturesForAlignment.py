@@ -39,6 +39,8 @@ def extractNumberVectorFromQuestion(wordproblem):
 			elif pos == 'CD':
 				#print word
 				number = convertToNumber(unicode(str(word),"utf-8"))
+				if number == None:
+					continue
 				#print number
 				try:
 					if i > 0:
@@ -53,9 +55,9 @@ def extractNumberVectorFromQuestion(wordproblem):
 			#		numberVector.append(0.01)
 	if '%' in wordproblem.lower() or 'cents' in wordproblem.lower() or 'percent' in wordproblem.lower() or 'percentage' in wordproblem.lower():
 		numberVector.append(0.01)
-	elif 'dimes' in wordproblem.lower():
+	if 'dimes' in wordproblem.lower():
 		numberVector.append(0.1)		
-	elif 'nickels' in wordproblem.lower():
+	if 'nickels' in wordproblem.lower():
 		numberVector.append(0.05)
 	print 'Extract feature', numberVector
 	return numberVector
@@ -104,7 +106,8 @@ def text2int(textnum, numwords={}):
 		
 		for word in textnum.split():
 			if word not in numwords:
-				raise Exception("Illegal word: " + word)
+				return None
+				#raise Exception("Illegal word: " + word)
 			scale, increment = numwords[word]
 			current = current * scale + increment
 			if scale > 100:
@@ -149,8 +152,8 @@ def findAlignment(wordproblem, equation, solution):
 				elif len(equation) == 2:
 					if solution[0] == result[x0]:# and solution[1] == result[x1]:
 						correctAlignment = alignment
-	except:
-		print 'error'
+	except Exception as e:
+		print 'error: ', e 
 		print wordproblem
 		print equation
 		print test
@@ -158,8 +161,8 @@ def findAlignment(wordproblem, equation, solution):
 
 	return (correctAlignment, numberVector)
 
-#wordproblem = 'Nine books are to be bought by a student'
-#equation = [u'(n0*x0)-(n1*x1)=n2', u'x0+x1=n3'] 
-#solution = [19.0]
+#wordproblem = 'Customers of a phone company can choose between 2 service plans for long distance calls. The first plan has a 22 dollars monthly fee and charges an additional 0.13 dollars for each minute of calls. The second plan has an 8 dollars monthly fee and charges an additional 0.18 dollars for each minute of calls. For how many minutes of calls will the costs of the two plans be equal?'
+#equation = [u'n0+(n1*x0)=n2+(n3*x0)'] 
+#solution = [280.0]
 #print findAlignment(wordproblem, equation, solution)
 #extractNumberVectorFromQuestion("A student is pricing 2 different picture packages. John 's Photo World charges 2.75 dollars per sheet and a one time sitting fee of 125 dollars. Sam 's Picture Emporium charges 1.50 dollars per sheet and a one time sitting fee of 140 dollars. For how many sheets of pictures do the 2 companies charge the same amount?")
