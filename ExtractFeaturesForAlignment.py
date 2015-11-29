@@ -161,7 +161,21 @@ def findAlignment(wordproblem, equation, solution):
 
 	return (correctAlignment, numberVector)
 
+def findNumberFeatures(wordproblem):
+	numbersInQuestion = extractNumberVectorFromQuestion(wordproblem)
+	rank = sorted(numbersInQuestion)
+	feature =[]
+	for i in range(0,len(numbersInQuestion)):
+		for j in range(0,len(rank)):
+			if numbersInQuestion[i] == rank[j]:
+				feature.append(j)
+				break
+	return feature
+
+
+
 #wordproblem = 'Customers of a phone company can choose between 2 service plans for long distance calls. The first plan has a 22 dollars monthly fee and charges an additional 0.13 dollars for each minute of calls. The second plan has an 8 dollars monthly fee and charges an additional 0.18 dollars for each minute of calls. For how many minutes of calls will the costs of the two plans be equal?'
+#print findNumberFeatures(wordproblem)
 #equation = [u'n0+(n1*x0)=n2+(n3*x0)'] 
 #solution = [280.0]
 #print findAlignment(wordproblem, equation, solution)

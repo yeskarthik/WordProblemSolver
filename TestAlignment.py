@@ -4,11 +4,15 @@ from ExtractFeaturesForAlignment import extractNumberVectorFromQuestion
 from TemplateParser import solveEquations, getNumberslots
 from sympy import Symbol
 
-def testAlignments(test_data,classifier):
+def testAlignments(test_data, classifiers):
     x0 = Symbol('x0')
     featuresets = []
     correctlyAlignedIndicesList = []
     for (i, iIndex, wordproblem, equationTemplate, solution) in test_data:
+        try:
+            classifier = classifiers[str(equationTemplate)]
+        except KeyError:
+            continue
         alignmentFeatures, correctlyAlignedIndices = extractAlignmentFeatures(wordproblem, equationTemplate, solution, i, 'train')        
         featuresets.append(alignmentFeatures)
         alignedString = ''
@@ -49,10 +53,10 @@ def testAlignments(test_data,classifier):
         #print predictedAlignedValues
 
 
-    #for i in range(0,1):
-        #print correctlyAlignedIndicesList[i], prediction[i]
-    #    if correctlyAlignedIndicesList[i] == prediction[i]:
-    #        correct += 1
+    for i in range(0,len(prediction)):
+        print correctlyAlignedIndicesList[i], prediction[i]
+        if correctlyAlignedIndicesList[i] == prediction[i]:
+            correct += 1
     print 'Correct: ' + str(correct)
 
 

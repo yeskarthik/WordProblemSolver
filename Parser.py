@@ -31,6 +31,16 @@ def parseDataset(dataSource):
 
     return templates
 
+def segregateByTemplates(labeled_data):
+    result = {}
+    for i, iIndex, sQuestion, template, lSolutions in labeled_data:
+        try:
+            result[str(template)].append((i, iIndex, sQuestion, template, lSolutions))
+        except:
+            result[str(template)] = [(i, iIndex, sQuestion, template, lSolutions)]
+    return result
+
+
 
 if __name__ == "__main__":
     labeled_word_problems = parseDataset('data/questions-original.json')
@@ -44,8 +54,8 @@ if __name__ == "__main__":
     train_data = labeled_data[:length_by_two]
     test_data = labeled_data[length_by_two:]
 
-    train_data = train_data[:50]
-    test_data = test_data[:50]
+    #train_data = train_data[:50]
+    #test_data = train_data
     
     #train_data = labeled_data[length_by_two:]
     #test_data = labeled_data[:length_by_two]
@@ -56,6 +66,7 @@ if __name__ == "__main__":
     
     #algorithmsNLTK = ['NaiveBayes', 'DecisionTree', 'MaxEnt', 'MaxEntMegam']
     #algorithmsSciKit = ['NaiveBayes', 'DecisionTree', 'SVM', 'MaxEnt']
+    '''
     algorithmsNLTK = []
     algorithmsSciKit = ['NaiveBayes']
 
@@ -75,10 +86,34 @@ if __name__ == "__main__":
 
     print 'End.'
 
+    
+
     classifier = trainAlignmentClassifierScikit(train_data, 'NaiveBayes')
     predictedAlignment = testAlignments(test_data,classifier)
     print predictedAlignment
     #print classifier
+    '''
+
+    train_by_templates = segregateByTemplates(train_data)
+
+    l = [(len(train_by_templates[key]), key) for key in train_by_templates.keys()]
+    training_templates = list(reversed(sorted(l, key = lambda t: t[0])))
+
+    classifiers = {}
     
+    for tid, tem in training_templates:
+
+        classifier = trainAlignmentClassifierScikit(train_by_templates[tem], 'NaiveBayes')
+        classifiers[tem] = classifier
+        print classifier
+
+    predictedAlignment = testAlignments(test_data, classifiers)
+    print predictedAlignment
+
+    print training_templates
+
+
+
+
 
     

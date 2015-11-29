@@ -14,8 +14,10 @@ def trainAlignmentClassifierScikit(labeled_word_problems, algorithm):
     featuresets = []
     correctlyAlignedIndicesList = []
     for (i, iIndex, wordproblem, equationTemplate, solution) in labeled_word_problems:
+        print iIndex
         alignmentFeatures, correctlyAlignedIndices = extractAlignmentFeatures(wordproblem, equationTemplate, solution, i, 'train')
-        if len(correctlyAlignedIndices) != 0:
+
+        if len(correctlyAlignedIndices) != 0 and len(alignmentFeatures) != 0:
             featuresets.append(alignmentFeatures)
             alignedString = '' 
             for i in correctlyAlignedIndices:
@@ -31,16 +33,19 @@ def trainAlignmentClassifierScikit(labeled_word_problems, algorithm):
     print featuresets
     print correctlyAlignedIndicesList
 
-    if algorithm == 'SVM':
-        classifier = SVC()
-    elif algorithm == 'NaiveBayes':
-        classifier = GaussianNB()
-    elif algorithm == 'DecisionTree':
-        classifier = DecisionTreeClassifier()
-    elif algorithm == 'MaxEnt':
-        classifier = LogisticRegression()
+    classifier = None
 
-    classifier.fit(featuresets, correctlyAlignedIndicesList)
+    if len(featuresets) != 0:
+        if algorithm == 'SVM':
+            classifier = SVC()
+        elif algorithm == 'NaiveBayes':
+            classifier = GaussianNB()
+        elif algorithm == 'DecisionTree':
+            classifier = DecisionTreeClassifier()
+        elif algorithm == 'MaxEnt':
+            classifier = LogisticRegression()
+
+        classifier.fit(featuresets, correctlyAlignedIndicesList)
 
     return classifier
 
