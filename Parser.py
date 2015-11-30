@@ -66,9 +66,9 @@ if __name__ == "__main__":
     
     #algorithmsNLTK = ['NaiveBayes', 'DecisionTree', 'MaxEnt', 'MaxEntMegam']
     #algorithmsSciKit = ['NaiveBayes', 'DecisionTree', 'SVM', 'MaxEnt']
-    '''
+    
     algorithmsNLTK = []
-    algorithmsSciKit = ['NaiveBayes']
+    algorithmsSciKit = ['MaxEnt']
 
     print 'Start..'
     for algorithm in algorithmsSciKit:
@@ -87,12 +87,12 @@ if __name__ == "__main__":
     print 'End.'
 
     
-
+'''
     classifier = trainAlignmentClassifierScikit(train_data, 'NaiveBayes')
     predictedAlignment = testAlignments(test_data,classifier)
     print predictedAlignment
     #print classifier
-    '''
+    
 
     train_by_templates = segregateByTemplates(train_data)
 
@@ -111,7 +111,7 @@ if __name__ == "__main__":
     print predictedAlignment
 
     print training_templates
-
+'''
 
 
 

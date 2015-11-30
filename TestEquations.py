@@ -32,6 +32,10 @@ def testScikitEquations(classifier, vectorizer, labeled_data):
 
     #print test_featuresets
     prediction = classifier.predict(test_featuresets)
+    for i in range(0, len(prediction)):
+        if onlyIndices[i] != prediction[i]:
+            print 'actual:', onlyIndices[i], 'prediction:', prediction[i], wordproblems[i]
+
     score = metrics.accuracy_score(onlyIndices, prediction)
     print("Accuracy:   %0.3f" % score)
     return prediction
@@ -47,5 +51,4 @@ def testEquations(classifier, labeled_data):
         else:
             incorrectly_found += 1
     return (correctly_found, incorrectly_found)
-
 
