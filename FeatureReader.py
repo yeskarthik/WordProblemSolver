@@ -1,5 +1,5 @@
 def readAndConvertFeatures(qIndex):
-    with open('data/word_prob_ftr/'+str(qIndex)+'.txt') as f:
+    with open('data/'+str(qIndex)+'.txt') as f:
         result = []
         equation = ''
         for i, line in enumerate(f):

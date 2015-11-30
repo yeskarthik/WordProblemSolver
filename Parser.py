@@ -3,7 +3,7 @@ from ReadEquations import generateEquationTemplate
 from Classifier import trainClassifier, trainClassifierScikit
 from TestEquations import testEquations, testScikitEquations
 from AlignmentClassifier import trainAlignmentClassifier, trainAlignmentClassifierScikit, trainAlignmentClassifier1
-from TestAlignment import testAlignments
+from TestAlignment import testAlignments, testAlignmentPrediction
 
 data = None
 labeled_data = []
@@ -55,7 +55,7 @@ if __name__ == "__main__":
     test_data = labeled_data[length_by_two:]
 
     train_data = train_data[:3]
-    #test_data = train_data
+    test_data = train_data
     
     #train_data = labeled_data[length_by_two:]
     #test_data = labeled_data[:length_by_two]
@@ -92,7 +92,7 @@ if __name__ == "__main__":
     print 'classification completed'
     print classifier
 
-    predictedAlignment = testAlignments(test_data,classifier)
+    predictedAlignment = testAlignmentPrediction(classifier,test_data)
     print predictedAlignment
     #print classifier
 

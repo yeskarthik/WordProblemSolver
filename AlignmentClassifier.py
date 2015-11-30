@@ -91,7 +91,7 @@ def trainAlignmentClassifier1(labeled_word_problems, algorithm):
             classes.append(each[0])
             equations.append(each[2])
 
-    print equations[1]
+    #print equations[1]
     #train_set = featuresets
     train_set = numpy.array(featuresets).astype(numpy.float)
 

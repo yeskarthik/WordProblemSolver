@@ -67,7 +67,7 @@ def solveMNEquations(equations):
         result = solve((equations[0].split(' = ')[0], equations[1].split(' = ')[0]), m, n)
     return result
 
-print solveMNEquations('(5.0*m)+(3.0*n)+-42.0 = 0, -178.0+m+n = 0')
+#print solveMNEquations('(5.0*m)+(3.0*n)+-42.0 = 0, -178.0+m+n = 0')
 #equation = [u'n0+(n1*x0)=n2+(n3*x0)']
 
 #alignedNumbers = extractNumberVectorFromQuestion('A writing workshop enrolls novelists and poets in a ratio of 5 to 3. There are 24 people at the workshop. How many novelists are there? How many poets are there?')
