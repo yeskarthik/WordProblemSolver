@@ -7,10 +7,11 @@ from sklearn.svm import SVC
 from sklearn.naive_bayes import GaussianNB
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.linear_model import LogisticRegression
+from FeatureReader import readAndConvertFeatures 
 
 
 def trainAlignmentClassifierScikit(labeled_word_problems, algorithm):
-    
+
     featuresets = []
     correctlyAlignedIndicesList = []
     for (i, iIndex, wordproblem, equationTemplate, solution) in labeled_word_problems:
@@ -45,7 +46,7 @@ def trainAlignmentClassifierScikit(labeled_word_problems, algorithm):
         elif algorithm == 'MaxEnt':
             classifier = LogisticRegression()
 
-        classifier.fit(featuresets, correctlyAlignedIndicesList)
+        
 
     return classifier
 
@@ -63,7 +64,7 @@ def trainAlignmentClassifier(labeled_word_problems, algorithm):
         #for (i, iIndex, wordproblem, equationTemplate, solution) in labeled_word_problems]
 
     print featuresets
-    train_set = featuresets
+    
 
     if algorithm == 'DecisionTree':
         classifier = nltk.DecisionTreeClassifier.train(train_set)
@@ -76,4 +77,37 @@ def trainAlignmentClassifier(labeled_word_problems, algorithm):
 
     return classifier
 
+
+
+def trainAlignmentClassifier1(labeled_word_problems, algorithm):
+    
+    featuresets = []
+    classes = []
+    equations = []
+    for (i, iIndex, wordproblem, equationTemplate, solution) in labeled_word_problems:
+        result = readAndConvertFeatures(iIndex)        
+        for each in result:
+            featuresets.append(each[1])
+            classes.append(each[0])
+            equations.append(each[2])
+
+    print equations[1]
+    #train_set = featuresets
+    train_set = numpy.array(featuresets).astype(numpy.float)
+
+    classifier = None
+
+    if len(featuresets) != 0:
+        if algorithm == 'SVM':
+            classifier = SVC()
+        elif algorithm == 'NaiveBayes':
+            classifier = GaussianNB()
+        elif algorithm == 'DecisionTree':
+            classifier = DecisionTreeClassifier()
+        elif algorithm == 'MaxEnt':
+            classifier = LogisticRegression()
+
+    classifier.fit(train_set, classes)
+
+    return classifier
 

@@ -2,7 +2,7 @@ import json
 from ReadEquations import generateEquationTemplate
 from Classifier import trainClassifier, trainClassifierScikit
 from TestEquations import testEquations, testScikitEquations
-from AlignmentClassifier import trainAlignmentClassifier, trainAlignmentClassifierScikit
+from AlignmentClassifier import trainAlignmentClassifier, trainAlignmentClassifierScikit, trainAlignmentClassifier1
 from TestAlignment import testAlignments
 
 data = None
@@ -54,7 +54,7 @@ if __name__ == "__main__":
     train_data = labeled_data[:length_by_two]
     test_data = labeled_data[length_by_two:]
 
-    #train_data = train_data[:50]
+    train_data = train_data[:3]
     #test_data = train_data
     
     #train_data = labeled_data[length_by_two:]
@@ -66,7 +66,7 @@ if __name__ == "__main__":
     
     #algorithmsNLTK = ['NaiveBayes', 'DecisionTree', 'MaxEnt', 'MaxEntMegam']
     #algorithmsSciKit = ['NaiveBayes', 'DecisionTree', 'SVM', 'MaxEnt']
-    '''
+    
     algorithmsNLTK = []
     algorithmsSciKit = ['NaiveBayes']
 
@@ -88,12 +88,15 @@ if __name__ == "__main__":
 
     
 
-    classifier = trainAlignmentClassifierScikit(train_data, 'NaiveBayes')
+    classifier = trainAlignmentClassifier1(train_data, 'NaiveBayes')
+    print 'classification completed'
+    print classifier
+
     predictedAlignment = testAlignments(test_data,classifier)
     print predictedAlignment
     #print classifier
-    '''
 
+'''
     train_by_templates = segregateByTemplates(train_data)
 
     l = [(len(train_by_templates[key]), key) for key in train_by_templates.keys()]
@@ -111,6 +114,7 @@ if __name__ == "__main__":
     print predictedAlignment
 
     print training_templates
+'''
 
 
 
