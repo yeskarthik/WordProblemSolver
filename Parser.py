@@ -54,8 +54,8 @@ if __name__ == "__main__":
     train_data = labeled_data[:length_by_two]
     test_data = labeled_data[length_by_two:]
 
-    train_data = train_data[:3]
-    test_data = train_data
+    train_data = train_data[:10]
+    test_data = test_data[:5]
     
     #train_data = labeled_data[length_by_two:]
     #test_data = labeled_data[:length_by_two]

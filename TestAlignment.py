@@ -4,6 +4,7 @@ from ExtractFeaturesForAlignment import extractNumberVectorFromQuestion
 from TemplateParser import solveEquations, getNumberslots, solveMNEquations
 from FeatureReader import readAndConvertFeatures 
 from sympy import Symbol
+import numpy
 
 def testAlignments(test_data, classifiers):
     x0 = Symbol('x0')
@@ -69,17 +70,17 @@ def testAlignmentPrediction(classifier, test_data):
     for (i, iIndex, wordproblem, equationTemplate, solution) in test_data:
         result = readAndConvertFeatures(iIndex)        
         for each in result:
-            featuresets.append(each[1])
+            featuresets.append(numpy.array(each[1]).astype(numpy.float))
             classes.append(each[0])
             equations.append(each[2])
         for i in range(0,len(featuresets)):
-            predictedclass = classifier.predict(feature)
+            predictedclass = classifier.predict(featuresets[i])
             if int(predictedclass) == 1:
                 equation = equations[i]
-                result = solveMNEquations(equations)
+                result = solveMNEquations(equation)
                 if result[m] == solution[0]:
                     correct += 1
                     break
-    print correct
+    print 'correctly predicted:', correct
 
 
