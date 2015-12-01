@@ -5,6 +5,7 @@
 - ScikitLearn 0.16.1
 - NumPy
 - Install MaxEnt 'megam'
+- Sympy
 
 ### Data
 
