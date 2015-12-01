@@ -59,7 +59,7 @@ def extractNumberVectorFromQuestion(wordproblem):
 		numberVector.append(0.1)		
 	if 'nickels' in wordproblem.lower():
 		numberVector.append(0.05)
-	print 'Extract feature', numberVector
+	#print 'Extract feature', numberVector
 	return numberVector
 
 

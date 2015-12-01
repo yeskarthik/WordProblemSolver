@@ -14,7 +14,7 @@ def trainAlignmentClassifierScikit(labeled_word_problems, algorithm):
     featuresets = []
     correctlyAlignedIndicesList = []
     for (i, iIndex, wordproblem, equationTemplate, solution) in labeled_word_problems:
-        alignmentFeatures, correctlyAlignedIndices = extractAlignmentFeatures(wordproblem, equationTemplate, solution, i, 'train')
+        alignmentFeatures, correctlyAlignedIndices = extractAlignmentFeatures(wordproblem, equationTemplate, solution, i)
         if len(correctlyAlignedIndices) != 0:
             featuresets.append(alignmentFeatures)
             alignedString = '' 
@@ -24,12 +24,12 @@ def trainAlignmentClassifierScikit(labeled_word_problems, algorithm):
             correctlyAlignedIndicesList.append(alignedString)
 
     #sfeaturesets = numpy.array(featuresets)
-    print type(featuresets)
+    #print type(featuresets)
     #correctlyAlignedIndicesList = numpy.array(correctlyAlignedIndicesList)
 
 
-    print featuresets
-    print correctlyAlignedIndicesList
+    #print featuresets
+    #print correctlyAlignedIndicesList
 
     if algorithm == 'SVM':
         classifier = SVC()
@@ -57,7 +57,7 @@ def trainAlignmentClassifier(labeled_word_problems, algorithm):
         #featuresets = [(extractAlignmentFeatures(wordproblem, equationTemplate, solution), i) 
         #for (i, iIndex, wordproblem, equationTemplate, solution) in labeled_word_problems]
 
-    print featuresets
+    #print featuresets
     train_set = featuresets
 
     if algorithm == 'DecisionTree':

@@ -44,8 +44,8 @@ if __name__ == "__main__":
     train_data = labeled_data[:length_by_two]
     test_data = labeled_data[length_by_two:]
 
-    train_data = train_data[:50]
-    test_data = test_data[:50]
+    #train_data = train_data[:50]
+    #test_data = test_data[:50]
     
     #train_data = labeled_data[length_by_two:]
     #test_data = labeled_data[:length_by_two]
@@ -54,10 +54,11 @@ if __name__ == "__main__":
     #print classifier
 
     
-    #algorithmsNLTK = ['NaiveBayes', 'DecisionTree', 'MaxEnt', 'MaxEntMegam']
-    #algorithmsSciKit = ['NaiveBayes', 'DecisionTree', 'SVM', 'MaxEnt']
-    algorithmsNLTK = []
-    algorithmsSciKit = ['NaiveBayes']
+    algorithmsNLTK = ['NaiveBayes', 'DecisionTree', 'MaxEnt']
+    algorithmsSciKit = ['NaiveBayes', 'DecisionTree', 'SVM', 'MaxEnt']
+    algorithmAlignment = ['NaiveBayes','MaxEnt' ]
+    #algorithmsNLTK = []
+    #algorithmsSciKit = ['NaiveBayes']
 
     print 'Start..'
     for algorithm in algorithmsSciKit:
@@ -75,9 +76,11 @@ if __name__ == "__main__":
 
     print 'End.'
 
-    classifier = trainAlignmentClassifierScikit(train_data, 'NaiveBayes')
-    predictedAlignment = testAlignments(test_data,classifier)
-    print predictedAlignment
+    for algorithm in algorithmAlignment:
+        print 'Using', algorithm, 'classifier - Scikit Learn'  
+        classifier = trainAlignmentClassifierScikit(train_data, algorithm)
+        accuracy = testAlignments(test_data,classifier)       
+        print 'Accuracy:', accuracy
     #print classifier
     
 

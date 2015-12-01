@@ -9,7 +9,7 @@ def testAlignments(test_data,classifier):
     featuresets = []
     correctlyAlignedIndicesList = []
     for (i, iIndex, wordproblem, equationTemplate, solution) in test_data:
-        alignmentFeatures, correctlyAlignedIndices = extractAlignmentFeatures(wordproblem, equationTemplate, solution, i, 'train')        
+        alignmentFeatures, correctlyAlignedIndices = extractAlignmentFeatures(wordproblem, equationTemplate, solution, i)        
         featuresets.append(alignmentFeatures)
         alignedString = ''
         for c in correctlyAlignedIndices:
@@ -53,6 +53,8 @@ def testAlignments(test_data,classifier):
         #print correctlyAlignedIndicesList[i], prediction[i]
     #    if correctlyAlignedIndicesList[i] == prediction[i]:
     #        correct += 1
-    print 'Correct: ' + str(correct)
+    #print 'Correct: ' + str(correct)
+    accuracy = (correct/float(len(test_data)))
+    return accuracy
 
 
