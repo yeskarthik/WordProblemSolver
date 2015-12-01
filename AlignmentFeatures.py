@@ -1,15 +1,14 @@
 from TemplateParser import  getNumberslots
 from ExtractFeaturesForAlignment import extractNumberVectorFromQuestion, findAlignment, findNumberFeatures
 
-def extractAlignmentFeatures(wordproblem, equationTemplate, solution, templateIndex, type):
+def extractAlignmentFeatures(wordproblem, equationTemplate, solution, templateIndex):
     featureVector = []
     correctAlignment = []
     #numberVector = extractNumberVectorFromQuestion(wordproblem)
     noOfNumberSlots = len(getNumberslots(equationTemplate)) 
-    if(type == 'train'):
-        correctAlignment, numberVector = findAlignment(wordproblem, equationTemplate, solution)
-    else:
-        numberVector = extractNumberVectorFromQuestion(wordproblem)
+
+    correctAlignment, numberVector = findAlignment(wordproblem, equationTemplate, solution)
+    numberVector = extractNumberVectorFromQuestion(wordproblem)
     #print numberVector
     correctAlignedIndices = []
     if len(correctAlignment) != 0:

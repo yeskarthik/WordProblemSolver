@@ -13,7 +13,7 @@ def testAlignments(test_data, classifiers):
             classifier = classifiers[str(equationTemplate)]
         except KeyError:
             continue
-        alignmentFeatures, correctlyAlignedIndices = extractAlignmentFeatures(wordproblem, equationTemplate, solution, i, 'train')        
+        alignmentFeatures, correctlyAlignedIndices = extractAlignmentFeatures(wordproblem, equationTemplate, solution, i)        
         featuresets.append(alignmentFeatures)
         alignedString = ''
         for c in correctlyAlignedIndices:

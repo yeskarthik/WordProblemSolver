@@ -15,9 +15,9 @@ def trainClassifierScikit(labeled_word_problems, algorithm):
 
     vectorizer, featuresets = addBagOfWordsFeature(allwordproblems)
 
-    print type(featuresets)
+    #print type(featuresets)
     
-    print templateIndices
+    #print templateIndices
 
     if algorithm == 'SVM':
         classifier = SVC()

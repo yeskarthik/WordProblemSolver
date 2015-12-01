@@ -26,12 +26,12 @@ def trainAlignmentClassifierScikit(labeled_word_problems, algorithm):
             correctlyAlignedIndicesList.append(alignedString)
 
     #sfeaturesets = numpy.array(featuresets)
-    print type(featuresets)
+    #print type(featuresets)
     #correctlyAlignedIndicesList = numpy.array(correctlyAlignedIndicesList)
 
 
-    print featuresets
-    print correctlyAlignedIndicesList
+    #print featuresets
+    #print correctlyAlignedIndicesList
 
     classifier = None
 
