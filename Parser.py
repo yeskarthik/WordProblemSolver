@@ -60,7 +60,7 @@ if __name__ == "__main__":
     #algorithmsNLTK = []
     #algorithmsSciKit = ['NaiveBayes']
 
-    print 'Start..'
+    print 'Template Induction Started...'
     for algorithm in algorithmsSciKit:
         print 'Using', algorithm, 'classifier - Scikit Learn'  
         (vectorizer, classifier) = trainClassifierScikit(train_data, algorithm)
@@ -74,13 +74,15 @@ if __name__ == "__main__":
         print 'Accuracy:', stats[0]/(stats[0]+stats[1]+0.0)
         #print 'Incorrectly predicted:', stats[1]/(stats[0]+stats[1]+0.0)
 
-    print 'End.'
+    print 'Template Induction Completed.'
 
+    print 'Alignment Prediction Started...'
     for algorithm in algorithmAlignment:
         print 'Using', algorithm, 'classifier - Scikit Learn'  
         classifier = trainAlignmentClassifierScikit(train_data, algorithm)
         accuracy = testAlignments(test_data,classifier)       
         print 'Accuracy:', accuracy
+    print 'Alignment Prediction Completed.'
     #print classifier
     
 
